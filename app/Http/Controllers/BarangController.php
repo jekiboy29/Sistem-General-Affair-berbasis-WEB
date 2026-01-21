@@ -104,9 +104,16 @@ class BarangController extends Controller
         $path = null;
         if ($request->hasFile('cropped_image')) {
             $file = $request->file('cropped_image');
+
             $filename = 'barang_' . Str::random(12) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/barang', $filename);
-            $path = 'barang/' . $filename;
+
+            $destination = public_path('asset');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+
+            $file->move($destination, $filename);
+            $path = 'asset/' . $filename;
         }
 
         Barang::create([
@@ -148,16 +155,27 @@ class BarangController extends Controller
             'cropped_image' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
-        if ($request->hasFile('cropped_image')) {
-            if ($barang->foto_barang && Storage::exists('public/' . $barang->foto_barang)) {
-                Storage::delete('public/' . $barang->foto_barang);
-            }
+       if ($request->hasFile('cropped_image')) {
 
-            $file = $request->file('cropped_image');
-            $filename = 'barang_' . Str::random(12) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/barang', $filename);
-            $validated['foto_barang'] = 'barang/' . $filename;
+        if ($barang->foto_barang) {
+            $oldPath = public_path($barang->foto_barang);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
         }
+
+        $file = $request->file('cropped_image');
+        $filename = 'barang_' . Str::random(12) . '.' . $file->getClientOriginalExtension();
+
+        $destination = public_path('asset');
+        if (!file_exists($destination)) {
+            mkdir($destination, 0755, true);
+        }
+
+        $file->move($destination, $filename);
+
+        $validated['foto_barang'] = 'asset/' . $filename;
+    }
 
         $barang->update($validated);
 

@@ -3,13 +3,13 @@
 @section('title', 'Edit Profil')
 
 @section('content')
-<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-8">
-    <h1 class="text-2xl font-bold text-purple-800 mb-6 flex items-center">
+<div class="max-w-3xl p-8 mx-auto bg-white shadow-lg rounded-2xl">
+    <h1 class="flex items-center mb-6 text-2xl font-bold text-purple-800">
         👤 <span class="ml-2">Ubah Profil</span>
     </h1>
 
     @if(session('status'))
-        <div class="bg-green-100 border-l-4 border-green-600 text-green-800 p-3 rounded mb-4">
+        <div class="p-3 mb-4 text-green-800 bg-green-100 border-l-4 border-green-600 rounded">
             {{ session('status') }}
         </div>
     @endif
@@ -18,60 +18,60 @@
         @csrf
 
         <!-- Foto Profil -->
-        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
             <div>
                 @if($user->profile_picture)
                     <img id="preview" src="{{ asset('storage/profile_pictures/'.$user->profile_picture) }}"
-                         class="w-28 h-28 rounded-full border-4 border-purple-400 shadow-lg object-cover transition-all duration-300">
+                         class="object-cover transition-all duration-300 border-4 border-purple-400 rounded-full shadow-lg w-28 h-28">
                 @else
                     <div id="preview"
-                         class="w-28 h-28 rounded-full bg-purple-300 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                         class="flex items-center justify-center text-3xl font-bold text-white bg-purple-300 rounded-full shadow-lg w-28 h-28">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                 @endif
             </div>
             <div class="flex-1">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Ganti Foto Profil</label>
+                <label class="block mb-2 text-sm font-medium text-gray-700">Ganti Foto Profil</label>
                 <input type="file" id="profile_picture" name="profile_picture" accept="image/*"
-                       class="block w-full text-sm text-gray-600 border border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500 p-2 cursor-pointer"
+                       class="block w-full p-2 text-sm text-gray-600 border border-gray-300 rounded-lg shadow-sm cursor-pointer focus:ring-purple-500 focus:border-purple-500"
                        onchange="previewImage(event)">
-                <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Maks: 2MB</p>
+                <p class="mt-1 text-xs text-gray-500">Format: JPG, PNG. Maks: 2MB</p>
             </div>
         </div>
 
         <!-- Nama -->
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Nama Lengkap</label>
             <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500 p-2">
+                class="w-full p-2 text-black border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500">
         </div>
 
         <!-- username -->
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Username</label>
             <input type="text" name="username" value="{{ old('username', $user->username) }}"
-                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500 p-2">
+                class="w-full p-2 text-black border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500">
         </div>
 
         <!-- Username Telegram -->
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Username Telegram</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Username Telegram</label>
             <div class="flex items-center">
-                <span class="text-gray-500 mr-2">@</span>
+                <span class="mr-2 text-gray-500">@</span>
                 <input type="text" name="telegram_username"
                     value="{{ old('telegram_username', $user->telegram_username) }}"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500 p-2">
+                    class="w-full p-2 text-black border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500">
             </div>
         </div>
 
         <!-- Role dan Status -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+        <div class="grid grid-cols-1 gap-4 mt-6 sm:grid-cols-2">
             <div>
-                <p class="text-gray-600 font-semibold">Role:</p>
-                <p class="text-purple-700 font-bold capitalize">{{ $user->role }}</p>
+                <p class="font-semibold text-gray-600">Role:</p>
+                <p class="font-bold text-purple-700 capitalize">{{ $user->role }}</p>
             </div>
             <div>
-                <p class="text-gray-600 font-semibold">Status Akun:</p>
+                <p class="font-semibold text-gray-600">Status Akun:</p>
                 <span class="px-3 py-1 rounded-full text-sm font-semibold
                     {{ $user->status === 'approved' ? 'bg-green-100 text-green-700' :
                        ($user->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
@@ -81,17 +81,17 @@
         </div>
 
         <!-- Tombol Simpan & Kembali -->
-        <div class="flex justify-end mt-6 gap-3">
+        <div class="flex justify-end gap-3 mt-6">
             <!-- Tombol Kembali -->
             <button type="button"
                 onclick="window.history.back()"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-2 rounded-lg shadow transition">
+                class="px-6 py-2 font-semibold text-gray-800 transition bg-gray-300 rounded-lg shadow hover:bg-gray-400">
                 ⬅️ Kembali
             </button>
 
             <!-- Tombol Simpan -->
             <button type="submit"
-                class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                class="px-6 py-2 font-semibold text-white transition bg-purple-600 rounded-lg shadow hover:bg-purple-700">
                 💾 Simpan Perubahan
             </button>
         </div>
@@ -99,15 +99,15 @@
 </div>
 
 <!-- Modal Cropper -->
-<div id="cropper-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+<div id="cropper-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/50 backdrop-blur-md">
     <div class="bg-white rounded-2xl shadow-2xl p-6 w-[90vw] sm:w-[500px] text-center animate-fade-in">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Sesuaikan Foto Profil</h2>
+        <h2 class="mb-4 text-lg font-semibold text-gray-800">Sesuaikan Foto Profil</h2>
         <div class="flex justify-center items-center max-h-[70vh] overflow-hidden">
             <img id="cropper-image" class="max-w-full max-h-[70vh] object-contain">
         </div>
-        <div class="flex justify-end mt-5 gap-3">
-            <button onclick="cancelCrop()" class="px-4 py-2 rounded-lg border text-gray-700 hover:bg-gray-100">Batal</button>
-            <button onclick="uploadCroppedImage()" class="px-5 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow">Simpan</button>
+        <div class="flex justify-end gap-3 mt-5">
+            <button onclick="cancelCrop()" class="px-4 py-2 text-gray-700 border rounded-lg hover:bg-gray-100">Batal</button>
+            <button onclick="uploadCroppedImage()" class="px-5 py-2 text-white bg-purple-600 rounded-lg shadow hover:bg-purple-700">Simpan</button>
         </div>
     </div>
 </div>
